@@ -1,0 +1,1676 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Happy Birthday Ana! 🩷🎀</title>
+    <link href="https://fonts.googleapis.com/css2?family=Fredoka+One&family=Patrick+Hand&family=Poppins:wght@400;600;800&display=swap" rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
+    <style>
+        :root {
+            --primary-pink: #ff85a2;
+            --dark-pink: #f43f5e;
+            --soft-pink: #fbcfe8;
+            --bg-pink: #fff0f5;
+            --dark-bg: #1f1124;
+            --paper-bg: #fffbfb;
+            --border-color: #f472b6;
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            user-select: none;
+        }
+
+        body {
+            background-color: var(--dark-bg);
+            font-family: 'Poppins', sans-serif;
+            color: #fff;
+            overflow: hidden;
+            height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        /* Cute Dots Pattern Background */
+        .comic-bg {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            background-image: radial-gradient(#f472b6 20%, transparent 20%);
+            background-size: 18px 18px;
+            opacity: 0.25;
+            z-index: 1;
+        }
+
+        .container {
+            position: relative;
+            z-index: 10;
+            width: 100%;
+            max-width: 650px;
+            height: 100vh;
+            max-height: 850px;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            padding: 20px;
+            text-align: center;
+        }
+
+        /* UI Elements */
+        .btn {
+            background: var(--dark-pink);
+            color: #fff;
+            font-family: 'Fredoka One', cursive;
+            font-size: 1.3rem;
+            letter-spacing: 1px;
+            padding: 12px 30px;
+            border: 3px solid #fff;
+            border-radius: 20px;
+            box-shadow: 0 6px 0px #be123c;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            margin-top: 15px;
+        }
+
+        .btn:hover {
+            transform: translate(-2px, -2px);
+            box-shadow: 0 8px 0px #be123c;
+            background: #fb7185;
+        }
+
+        .btn:active {
+            transform: translate(2px, 2px);
+            box-shadow: 0 2px 0px #be123c;
+        }
+
+        /* Sound Control Toggle */
+        .sound-btn {
+            position: absolute;
+            top: 15px;
+            right: 15px;
+            z-index: 100;
+            background: #2e1065;
+            color: #fff;
+            border: 2px solid #f472b6;
+            border-radius: 50%;
+            width: 44px;
+            height: 44px;
+            font-size: 1.2rem;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.5);
+        }
+
+        /* Dialogue Box */
+        .dialogue-box {
+            background: #ffffff;
+            color: #881337;
+            border: 3px solid var(--border-color);
+            border-radius: 20px;
+            padding: 15px 20px;
+            box-shadow: 4px 4px 0px #f472b6;
+            margin-top: 15px;
+            font-weight: 600;
+            max-width: 90%;
+            position: relative;
+            animation: bounceIn 0.5s ease;
+        }
+
+        .dialogue-box::after {
+            content: '';
+            position: absolute;
+            top: -15px;
+            left: 50%;
+            transform: translateX(-50%);
+            border-width: 0 10px 15px 10px;
+            border-style: solid;
+            border-color: transparent transparent #ffffff transparent;
+        }
+
+        /* Cute Character Visual */
+        .cute-char {
+            width: 120px;
+            height: 120px;
+            transition: all 0.5s ease;
+            filter: drop-shadow(0px 5px 5px rgba(0,0,0,0.3));
+        }
+
+        .cute-container {
+            position: relative;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        /* Scenes */
+        .scene {
+            display: none;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            width: 100%;
+            height: 100%;
+            position: absolute;
+        }
+
+        .scene.active {
+            display: flex;
+        }
+
+        /* Loading Bar */
+        .progress-bar-container {
+            width: 80%;
+            height: 24px;
+            background: #2e1065;
+            border: 3px solid #f472b6;
+            border-radius: 12px;
+            overflow: hidden;
+            margin-top: 20px;
+            padding: 2px;
+        }
+
+        .progress-bar {
+            width: 0%;
+            height: 100%;
+            background: linear-gradient(90deg, var(--dark-pink), var(--soft-pink));
+            border-radius: 8px;
+            transition: width 0.1s linear;
+        }
+
+        /* Letter Box */
+        .letter-paper {
+            background: var(--paper-bg);
+            color: #4c0519;
+            padding: 22px;
+            border-radius: 16px;
+            border: 3px solid var(--border-color);
+            box-shadow: 0 10px 25px rgba(0,0,0,0.3);
+            font-family: 'Patrick Hand', cursive;
+            font-size: 1.35rem;
+            line-height: 1.6;
+            text-align: left;
+            max-height: 58vh;
+            overflow-y: auto;
+            width: 92%;
+            margin-bottom: 15px;
+            position: relative;
+        }
+
+        .letter-paper p {
+            margin-bottom: 12px;
+        }
+
+        /* Comic Pop Text */
+        .comic-pop {
+            position: absolute;
+            font-family: 'Fredoka One', cursive;
+            font-size: 2.8rem;
+            color: #fff;
+            text-shadow: 3px 3px 0 var(--dark-pink), -3px -3px 0 var(--dark-pink), 3px -3px 0 var(--dark-pink), -3px 3px 0 var(--dark-pink);
+            animation: popIn 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275) forwards;
+            pointer-events: none;
+            z-index: 99;
+        }
+
+        /* --- MINI GAMES CSS --- */
+        /* Mission 1: Flower Hunt */
+        .flower-hunt-area {
+            position: relative;
+            width: 100%;
+            height: 350px;
+            background: #2e1065;
+            border: 3px solid var(--border-color);
+            border-radius: 16px;
+            overflow: hidden;
+        }
+
+        .hidden-flower {
+            position: absolute;
+            cursor: pointer;
+            font-size: 2.2rem;
+            transition: transform 0.15s ease-in-out;
+        }
+
+        .hidden-flower:hover {
+            transform: scale(1.3);
+        }
+
+        /* Mission 2: Sliding 15-Puzzle (3x3 grid: 1-8) */
+        .puzzle-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 85px);
+            grid-template-rows: repeat(3, 85px);
+            gap: 6px;
+            background: #2e1065;
+            padding: 10px;
+            border-radius: 16px;
+            border: 3px solid var(--border-color);
+            box-shadow: 0 8px 20px rgba(0,0,0,0.4);
+        }
+
+        .puzzle-tile {
+            width: 85px;
+            height: 85px;
+            background-color: var(--dark-pink);
+            color: white;
+            font-family: 'Fredoka One', cursive;
+            font-size: 2.2rem;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            border-radius: 12px;
+            border: 2px solid #fff;
+            user-select: none;
+            transition: background 0.2s;
+        }
+
+        .puzzle-tile.empty {
+            background-color: #1f1124;
+            border: 2px dashed var(--border-color);
+            cursor: default;
+        }
+
+        /* Mission 3: Memory Game */
+        .memory-grid {
+            display: grid;
+            grid-template-columns: repeat(4, 75px);
+            gap: 10px;
+        }
+
+        .memory-card {
+            width: 75px;
+            height: 75px;
+            background: var(--dark-pink);
+            border: 3px solid #fff;
+            border-radius: 14px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 2.2rem;
+            cursor: pointer;
+            transition: transform 0.3s, background 0.3s;
+            box-shadow: 3px 3px 0 var(--border-color);
+        }
+
+        .memory-card.flipped {
+            background: #fff;
+            transform: rotateY(180deg);
+        }
+
+        /* Mission 4: Fast Target Ribbon */
+        .ribbon-target-area {
+            position: relative;
+            width: 100%;
+            height: 320px;
+            background: #2e1065;
+            border: 3px solid var(--border-color);
+            border-radius: 16px;
+            overflow: hidden;
+        }
+
+        .ribbon-target {
+            position: absolute;
+            font-size: 3rem;
+            cursor: pointer;
+            user-select: none;
+            transition: transform 0.1s;
+        }
+
+        .ribbon-target:active {
+            transform: scale(0.8);
+        }
+
+        /* Mission 5: Floating Balloons Game */
+        .balloon-hud {
+            width: 100%;
+            max-width: 520px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 10px;
+            font-weight: 800;
+        }
+
+        .lives {
+            letter-spacing: 3px;
+            font-size: 1.15rem;
+        }
+
+        .balloon-area {
+            position: relative;
+            width: 100%;
+            height: 380px;
+            background: linear-gradient(#2e1065, #1f1124);
+            border: 3px solid var(--border-color);
+            border-radius: 16px;
+            overflow: hidden;
+            box-shadow: inset 0 0 30px rgba(0,0,0,.5);
+            cursor: pointer;
+        }
+
+        .floating-balloon {
+            position: absolute;
+            width: 58px;
+            height: 70px;
+            border-radius: 50% 50% 48% 48%;
+            cursor: pointer;
+            user-select: none;
+            z-index: 3;
+            animation: balloonRise var(--float-time) linear forwards;
+            transform-origin: 50% 65%;
+            background: #ff85a2;
+            box-shadow:
+                inset -10px -10px 0 rgba(0,0,0,.12),
+                inset 10px 8px 0 rgba(255,255,255,.32),
+                0 5px 8px rgba(0,0,0,.3);
+        }
+
+        .floating-balloon::before {
+            content: '';
+            position: absolute;
+            width: 9px;
+            height: 12px;
+            left: 50%;
+            bottom: -8px;
+            transform: translateX(-50%);
+            background: inherit;
+            clip-path: polygon(0 0, 100% 0, 50% 100%);
+        }
+
+        .floating-balloon::after {
+            content: '';
+            position: absolute;
+            width: 1px;
+            height: 48px;
+            left: 50%;
+            top: 69px;
+            background: rgba(255,255,255,.75);
+        }
+
+        .wrong-object {
+            position: absolute;
+            font-size: 2.7rem;
+            cursor: pointer;
+            user-select: none;
+            z-index: 4;
+            animation: wrongFloat var(--float-time) linear forwards;
+            filter: drop-shadow(0 4px 3px rgba(0,0,0,.5));
+        }
+
+        .pop-burst {
+            position: absolute;
+            z-index: 10;
+            pointer-events: none;
+            font-family: 'Fredoka One', cursive;
+            font-size: 2rem;
+            color: #fff;
+            text-shadow: 2px 2px 0 var(--dark-pink);
+            animation: burstOut .42s ease-out forwards;
+        }
+
+        .pop-piece {
+            position: absolute;
+            width: 8px;
+            height: 8px;
+            border-radius: 50%;
+            background: var(--soft-pink);
+            pointer-events: none;
+            z-index: 9;
+            animation: pieceFly .45s ease-out forwards;
+        }
+
+        @keyframes balloonRise {
+            0% {
+                transform: translateY(410px) rotate(-4deg) scale(.82);
+                opacity: 0;
+            }
+            8% { opacity: 1; }
+            50% {
+                transform: translateY(80px) rotate(4deg) scale(1);
+            }
+            100% {
+                transform: translateY(-95px) rotate(-3deg) scale(1.05);
+                opacity: .95;
+            }
+        }
+
+        @keyframes wrongFloat {
+            0% {
+                transform: translateY(410px) rotate(-10deg);
+                opacity: 0;
+            }
+            10% { opacity: 1; }
+            50% {
+                transform: translateY(80px) rotate(10deg);
+            }
+            100% {
+                transform: translateY(-95px) rotate(-8deg);
+                opacity: .85;
+            }
+        }
+
+        @keyframes burstOut {
+            0% { transform: scale(.3); opacity: 1; }
+            100% { transform: scale(1.45); opacity: 0; }
+        }
+
+        @keyframes pieceFly {
+            0% { transform: translate(0,0) scale(1); opacity: 1; }
+            100% { transform: translate(var(--dx), var(--dy)) scale(.2); opacity: 0; }
+        }
+
+        /* BONUS QUIZ */
+        .quiz-card {
+            width: 92%;
+            max-width: 560px;
+            background: var(--paper-bg);
+            color: #881337;
+            border: 3px solid var(--border-color);
+            border-radius: 20px;
+            padding: 22px;
+            box-shadow: 7px 7px 0 rgba(0,0,0,0.3);
+        }
+
+        .quiz-question {
+            font-size: 1.05rem;
+            font-weight: 800;
+            line-height: 1.45;
+            margin-bottom: 18px;
+        }
+
+        .quiz-options {
+            display: grid;
+            grid-template-columns: repeat(2, minmax(0, 1fr));
+            gap: 12px;
+        }
+
+        .quiz-option {
+            background: #fff;
+            color: #881337;
+            border: 3px solid var(--border-color);
+            border-radius: 12px;
+            padding: 13px 10px;
+            font-family: 'Poppins', sans-serif;
+            font-weight: 700;
+            cursor: pointer;
+            box-shadow: 3px 3px 0 rgba(0,0,0,0.1);
+            transition: .15s ease;
+        }
+
+        .quiz-option:hover {
+            transform: translate(-2px, -2px);
+            background: #fce7f3;
+        }
+
+        .quiz-option.correct { background: #86efac; color: #064e3b; }
+        .quiz-option.wrong { background: #fca5a5; color: #7f1d1d; }
+
+        #quiz-feedback {
+            min-height: 28px;
+            margin-top: 14px;
+            font-weight: 800;
+        }
+
+        /* PINK BIRTHDAY CAKE */
+        .birthday-cake {
+            position: relative;
+            width: min(320px, 88vw);
+            margin: 30px auto 24px;
+            padding-top: 85px;
+        }
+
+        .cake-top {
+            position: absolute;
+            top: 43px;
+            left: 3%;
+            width: 94%;
+            height: 85px;
+            border: 4px solid #be123c;
+            border-radius: 50%;
+            background: #f472b6;
+            box-shadow: inset 0 -9px #fb7185;
+            z-index: 2;
+        }
+
+        .candles-grid {
+            position: absolute;
+            z-index: 10;
+            top: 0;
+            left: 20%;
+            width: 60%;
+            height: 115px;
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            grid-template-rows: 1fr;
+            place-items: center;
+            overflow: visible;
+        }
+
+        .candle {
+            position: relative;
+            display: block;
+            width: 15px;
+            height: 38px;
+            padding: 0;
+            border: 2px solid #be123c;
+            border-radius: 4px 4px 2px 2px;
+            background: repeating-linear-gradient(
+                135deg,
+                #ffffff 0px,
+                #ffffff 5px,
+                #f472b6 5px,
+                #f472b6 10px
+            );
+            cursor: pointer;
+            visibility: visible;
+            opacity: 1;
+        }
+
+        .flame {
+            position: absolute;
+            display: block;
+            visibility: visible;
+            opacity: 1;
+            width: 13px;
+            height: 19px;
+            left: 50%;
+            top: -21px;
+            transform: translateX(-50%);
+            background: radial-gradient(
+                ellipse at 50% 70%,
+                #fff7a8 0 18%,
+                #ffb52e 45%,
+                #ff5722 75%
+            );
+            border-radius: 50% 50% 45% 45%;
+            filter: drop-shadow(0 0 5px #ffb52e);
+            animation: candleFlicker .65s infinite alternate;
+            pointer-events: none;
+        }
+
+        .candle.blown .flame {
+            display: none;
+        }
+
+        .cake-body {
+            position: relative;
+            height: 115px;
+            background: linear-gradient(
+                to bottom,
+                #f472b6 0%,
+                #fb7185 30%,
+                #e11d48 100%
+            );
+            border: 4px solid #be123c;
+            border-radius: 18px 18px 38px 38px;
+            box-shadow: 5px 7px 0 #881337;
+            overflow: visible;
+        }
+
+        .cake-drips {
+            position: absolute;
+            top: -2px;
+            left: -2px;
+            width: calc(100% + 4px);
+            height: 34px;
+            background: #fff5e8;
+            border: 3px solid #be123c;
+            border-radius: 15px 15px 45% 45%;
+            clip-path: polygon(
+                0 0, 100% 0, 100% 65%,
+                88% 65%, 84% 100%, 76% 100%,
+                72% 65%, 55% 65%, 50% 95%,
+                44% 95%, 40% 65%, 20% 65%,
+                16% 100%, 9% 100%, 8% 65%, 0 65%
+            );
+        }
+
+        .cake-plate {
+            position: relative;
+            z-index: -1;
+            height: 18px;
+            width: 112%;
+            margin-left: -6%;
+            margin-top: -2px;
+            background: linear-gradient(#fff5e8, #fbcfe8);
+            border: 3px solid #be123c;
+            border-radius: 50%;
+            box-shadow: 0 5px 0 #881337;
+        }
+
+        .cake-complete {
+            font-family: 'Fredoka One', cursive;
+            color: var(--soft-pink);
+            font-size: 1.8rem;
+            margin-top: 8px;
+            text-shadow: 2px 2px #881337;
+        }
+
+        /* Envelope */
+        .envelope {
+            width: 150px;
+            height: 100px;
+            background: var(--dark-pink);
+            border: 3px solid #fff;
+            border-radius: 12px;
+            position: relative;
+            cursor: pointer;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            box-shadow: 5px 5px 0 #be123c;
+        }
+
+        .envelope::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            border-left: 75px solid transparent;
+            border-right: 75px solid transparent;
+            border-top: 50px solid #be123c;
+        }
+
+        /* City Night Ending */
+        .city-bg {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(to bottom, #05050a 0%, #2e1065 60%, #4c1d95 100%);
+            display: flex;
+            flex-direction: column;
+            justify-content: flex-end;
+            align-items: center;
+        }
+
+        .skyline {
+            width: 100%;
+            height: 180px;
+            background: 
+                repeat-x bottom/120px 160px linear-gradient(to right, #09090e 80px, transparent 0),
+                repeat-x bottom/80px 120px linear-gradient(to right, #11111b 50px, transparent 0);
+            opacity: 0.9;
+        }
+
+        @keyframes bounceIn {
+            0% { transform: scale(0.3); opacity: 0; }
+            50% { transform: scale(1.05); }
+            70% { transform: scale(0.9); }
+            100% { transform: scale(1); opacity: 1; }
+        }
+
+        @keyframes popIn {
+            0% { transform: scale(0) rotate(-10deg); opacity: 0; }
+            80% { transform: scale(1.2) rotate(5deg); opacity: 1; }
+            100% { transform: scale(1) rotate(0deg); opacity: 1; }
+        }
+
+        @keyframes candleFlicker {
+            from { transform: translateX(-50%) rotate(-4deg) scale(1); }
+            to { transform: translateX(-50%) rotate(4deg) scale(1.12); }
+        }
+    </style>
+</head>
+<body>
+
+    <button class="sound-btn" onclick="toggleSound()" title="Toggle Sound">🔊</button>
+    <div class="comic-bg"></div>
+
+    <div class="container">
+
+        <!-- SCENE 1: LOADING -->
+        <div id="scene1" class="scene active">
+            <svg class="cute-char" viewBox="0 0 100 100">
+                <circle cx="50" cy="50" r="38" fill="#ff85a2" stroke="#fff" stroke-width="4"/>
+                <circle cx="38" cy="45" r="5" fill="#4c0519"/>
+                <circle cx="62" cy="45" r="5" fill="#4c0519"/>
+                <ellipse cx="32" cy="52" rx="5" ry="3" fill="#f43f5e" opacity="0.6"/>
+                <ellipse cx="68" cy="52" rx="5" ry="3" fill="#f43f5e" opacity="0.6"/>
+                <path d="M 44,58 Q 50,65 56,58" fill="none" stroke="#4c0519" stroke-width="3" stroke-linecap="round"/>
+                <path d="M 22,25 Q 35,15 48,28 Q 65,12 78,25 Q 50,38 22,25 Z" fill="#f43f5e"/>
+            </svg>
+            <h1 style="font-family: 'Fredoka One'; font-size: 1.8rem; letter-spacing: 1px; margin-top: 15px; color: var(--soft-pink);">LOADING BIRTHDAY MISSION...</h1>
+            <div class="progress-bar-container">
+                <div id="loading-progress" class="progress-bar"></div>
+            </div>
+        </div>
+
+        <!-- SCENE 2: CHARACTER SPEAKS -->
+        <div id="scene2" class="scene">
+            <div class="cute-container">
+                <svg class="cute-char" viewBox="0 0 100 100">
+                    <circle cx="50" cy="50" r="38" fill="#ff85a2" stroke="#fff" stroke-width="4"/>
+                    <circle cx="38" cy="45" r="5" fill="#4c0519"/>
+                    <circle cx="62" cy="45" r="5" fill="#4c0519"/>
+                    <ellipse cx="32" cy="52" rx="5" ry="3" fill="#f43f5e" opacity="0.6"/>
+                    <ellipse cx="68" cy="52" rx="5" ry="3" fill="#f43f5e" opacity="0.6"/>
+                    <path d="M 44,56 Q 50,64 56,56" fill="none" stroke="#4c0519" stroke-width="3" stroke-linecap="round"/>
+                    <path d="M 22,25 Q 35,15 48,28 Q 65,12 78,25 Q 50,38 22,25 Z" fill="#f43f5e"/>
+                </svg>
+            </div>
+            <div id="dialogue2" class="dialogue-box">Hi, Ana! 👋</div>
+            <button id="btn-next2" class="btn" style="display:none;" onclick="advanceScene2()">Lanjut ➜</button>
+        </div>
+
+        <!-- SCENE 3: ENVELOPE -->
+        <div id="scene3" class="scene">
+            <div id="envelope-box" class="envelope" onclick="clickEnvelope()">
+                <span style="font-family:'Fredoka One'; color:#fff; font-size:1.3rem; z-index:2; margin-top:20px;">For Ana</span>
+            </div>
+            <p style="margin-top:12px; font-size:0.95rem; color:#fbcfe8;">Click to Open 💌</p>
+            <div id="dialogue3" class="dialogue-box" style="display:none;"></div>
+            <button id="btn-start-m1" class="btn" style="display:none;" onclick="goToMission(1)">Start Mission 🎯</button>
+        </div>
+
+        <!-- MISSION 1: FIND FLOWERS -->
+        <div id="m1" class="scene">
+            <h2 style="font-family:'Fredoka One'; color:var(--soft-pink); letter-spacing:1px;">MISI 1: CARI 8 BUNGA CANTIK! 🌸</h2>
+            <p style="margin-bottom:10px; font-size:0.95rem;">Ditemukan: <span id="m1-count" style="color:var(--soft-pink); font-weight:bold;">0</span> / 8</p>
+            <div class="flower-hunt-area" id="hunt-area"></div>
+        </div>
+
+        <!-- LETTER PART 1 -->
+        <div id="letter1" class="scene">
+            <div class="letter-paper">
+                <p><strong>Happy birthday, Kanaaa!! 🩷🎀</strong></p>
+                <p id="type-p1"></p>
+            </div>
+            <button id="btn-to-m2" class="btn" style="display:none;" onclick="goToMission(2)">Continue ➜</button>
+        </div>
+
+        <!-- MISSION 2: PUZZLE -->
+        <div id="m2" class="scene">
+            <h2 style="font-family:'Fredoka One'; color:var(--soft-pink); margin-bottom:5px;">MISI 2: ARRANGE THE PUZZLE (1 UNTIL 8) 🧩</h2>
+            <p style="margin-bottom:12px; font-size:0.85rem; color:#fbcfe8;">Geser kotak angka ke tempat kosong sampai urut 1-8!</p>
+            <div class="puzzle-grid" id="puzzle-board"></div>
+        </div>
+
+        <!-- LETTER PART 2 -->
+        <div id="letter2" class="scene">
+            <div class="letter-paper">
+                <p id="type-p2"></p>
+            </div>
+            <button id="btn-to-m3" class="btn" style="display:none;" onclick="goToMission(3)">Continue ➜</button>
+        </div>
+
+        <!-- MISSION 3: MEMORY GAME -->
+        <div id="m3" class="scene">
+            <h2 style="font-family:'Fredoka One'; color:var(--soft-pink); margin-bottom:15px;">MISI 3: PINK MEMORY (Match The Cards) 💖</h2>
+            <div class="memory-grid" id="memory-board"></div>
+        </div>
+
+        <!-- LETTER PART 3 -->
+        <div id="letter3" class="scene">
+            <div class="letter-paper">
+                <p id="type-p3"></p>
+            </div>
+            <button id="btn-to-m4" class="btn" style="display:none;" onclick="goToMission(4)">Continue ➜</button>
+        </div>
+
+        <!-- MISSION 4: CATCH TARGET -->
+        <div id="m4" class="scene">
+            <h2 style="font-family:'Fredoka One'; color:var(--soft-pink);">MISI 4: CATCH THE RIBBON (5 KALI)! 🎀</h2>
+            <p style="margin-bottom:10px; font-size:0.95rem;">Tertangkap: <span id="m4-count" style="color:var(--soft-pink); font-weight:bold;">0</span> / 5</p>
+            <div class="ribbon-target-area" id="web-area"></div>
+        </div>
+
+        <!-- LETTER PART 4 -->
+        <div id="letter4" class="scene">
+            <div class="letter-paper">
+                <p id="type-p4"></p>
+            </div>
+            <button id="btn-to-m5" class="btn" style="display:none;" onclick="goToMission(5)">Continue ➜</button>
+        </div>
+
+        <!-- MISSION 5: REAL BALLOON POP GAME -->
+        <div id="m5" class="scene">
+            <h2 style="font-family:'Fredoka One'; color:var(--soft-pink);">
+                MISI 5: POP THE BALLOONS! 🎈
+            </h2>
+
+            <div class="balloon-hud">
+                <span>
+                    Pecah:
+                    <span id="m5-count" style="color:var(--soft-pink); font-weight:bold;">0</span> / 5
+                </span>
+                <span class="lives">
+                    Nyawa: <span id="m5-lives">❤️❤️❤️</span>
+                </span>
+            </div>
+
+            <p style="margin-bottom:8px; font-size:.82rem; color:#fbcfe8;">
+                Pecahkan balon pink 🎈. Jangan klik benda jebakan! 💣
+            </p>
+
+            <div class="balloon-area" id="balloon-area"></div>
+        </div>
+
+        <!-- BONUS QUIZ -->
+        <div id="quiz-scene" class="scene">
+            <div class="quiz-card">
+                <h2 style="
+                    font-family:'Fredoka One';
+                    color:var(--dark-pink);
+                    font-size:1.8rem;
+                    margin-bottom:10px;
+                ">
+                    BONUS QUIZ! 🎀
+                </h2>
+
+                <p class="quiz-question">
+                    When will the leader’s name and the name of the Alpha Drive One fandom be announced?
+                </p>
+
+                <div class="quiz-options">
+                    <button class="quiz-option" onclick="answerQuiz('a', this)">
+                        a. 15 October 2025
+                    </button>
+                    <button class="quiz-option" onclick="answerQuiz('b', this)">
+                        b. 22 August 2025
+                    </button>
+                    <button class="quiz-option" onclick="answerQuiz('c', this)">
+                        c. 01 November 2025
+                    </button>
+                    <button class="quiz-option" onclick="answerQuiz('d', this)">
+                        d. 08 Mei 2025
+                    </button>
+                </div>
+
+                <div id="quiz-feedback"></div>
+            </div>
+        </div>
+
+        <!-- BIRTHDAY CAKE SCENE -->
+        <div id="cake-scene" class="scene">
+            <h2 style="font-family:'Fredoka One'; color:var(--soft-pink); font-size:1.8rem;">MAKE A WISH, KANAAA!! 🎂</h2>
+
+            <p style="margin-top:5px; font-size:0.9rem; color:#fbcfe8;">
+                Ada 3 lilin buat Ana! Klik setiap lilin untuk meniup apinya yah ✨
+            </p>
+
+            <p style="margin-top:5px; font-size:0.9rem; color:#fbcfe8;">
+                Lilin padam: <span id="candle-count" style="font-weight:bold; color:#fff;">0 / 3</span>
+            </p>
+
+            <div class="birthday-cake">
+                <div class="candles-grid" id="candles-grid"></div>
+                <div class="cake-top"></div>
+
+                <div class="cake-body">
+                    <div class="cake-drips"></div>
+                </div>
+
+                <div class="cake-plate"></div>
+            </div>
+
+            <p id="cake-complete" class="cake-complete" style="display:none;">
+                YAYYY! WISH GRANTED! 🎉
+            </p>
+
+            <p id="cake-message" style="margin-top:5px; font-size:0.9rem; color:#fbcfe8;">
+                Make a wish first, then blow out all the candles! 💫
+            </p>
+
+            <button
+                id="btn-open-letter"
+                class="btn"
+                style="display:none;"
+                onclick="openBirthdayLetter()"
+            >
+                Buka Surat Spesial 💌
+            </button>
+        </div>
+
+        <!-- FULL LETTER RECAP SCENE -->
+        <div id="full-letter-scene" class="scene">
+            <h2 style="font-family:'Fredoka One'; color:var(--soft-pink); margin-bottom:10px;">📜 FOR ANA (KANAAA)</h2>
+            <div class="letter-paper">
+                <p><strong>Happy birthday, Kanaaa!! 🩷🎀</strong></p>
+                <p>Happy birthday to this pretty girl!! Semoga di umur yang baru ini, more good things find their way to you, yaa. Semoga selalu sehat, bahagia, dilancarin semua urusannya, dimudahin setiap langkahnya, and may all the little things you've been wishing for slowly come true. Semoga tahun ini jadi tahun yang penuh cerita baik, new experiences, and beautiful memories for you.</p>
+
+                <p>Honestly, it's really nice getting to know you. Awalnya cuma sering baca tulisanmu, terus pas kamu ajak idupin api tuh wow tbh i'm so happy. Yah, walaupun kita belum lama kenal dan masih banyak hal yang belum kita tau satu sama lain, i'm glad our little interactions happened. It's a small thing, but still a nice one.</p>
+
+                <p>For your special day, I hope life will be a little kinder to you. Semoga kamu selalu dikelilingi orang-orang yang tulus, yang nyaman buat diajak cerita, yang bisa bikin kamu ketawa di hari-hari biasa, and people who appreciate you just the way you are. Semoga kamu selalu punya tempat buat pulang, tempat buat istirahat, dan orang-orang yang bikin kamu ngerasa safe enough to be yourself.</p>
+
+                <p>Semoga semua yang lagi kamu usahain sekarang bisa berjalan dengan baik, yaa. Whatever dreams you're chasing, i hope you get closer to them little by little. Kalo ada sesuatu yang lagi kamu tunggu, semoga datang di waktu yang tepat. Kalo akhir-akhir ini ada hal yang bikin kamu capek, semoga semuanya segera terasa lebih ringan. And remember, you don't have to have everything figured out right now. Take your time, you're doing just fine.</p>
+
+                <p>Also, please keep writing your beautiful stories, kanaaa!! Semoga kamu selalu punya banyak inspirasi, nggak kehabisan ide buat berkarya, and never lose the excitement of creating something you love. Semoga tulisan-tulisan kamu bisa terus menemukan pembacanya, diterima dengan baik, dan jadi sesuatu yang membahagiakan buat kamu sendiri. It's such a lovely thing to share a little piece of your mind with the world, and i hope you always find joy in doing it.</p>
+
+                <p>And for you, pretty girl, i hope you get to experience so many beautiful things in life. Semoga bukan cuma kamu yang terlihat cantik di mata orang lain, tapi kamu juga bisa ngerasain betapa indahnya hidup yang sedang kamu jalanin. Semoga banyak hal baik datang tanpa harus kamu minta berkali-kali, banyak kabar baik yang bikin kamu senyum sendiri, and many little moments that make you think, "life is actually pretty nice."</p>
+
+                <p>Semoga Tuhan selalu jagain kamu, di mana pun kamu berada. Semoga kesehatan, kebahagiaan, rezeki yang lancar, hati yang tenang, dan orang-orang baik selalu menyertai kamu. Semoga setiap doa yang kamu simpan diam-diam bisa menemukan jalannya untuk dikabulkan. And if something doesn't go the way you planned, i hope life has something even better waiting for you.</p>
+
+                <p>I hope this new chapter brings you more peace, more genuine happiness, and more reasons to be proud of yourself. Semoga kamu nggak terlalu keras sama diri sendiri, selalu punya waktu buat istirahat, dan nggak lupa menikmati hal-hal kecil di tengah kesibukan kamu. You deserve happiness that feels calm, love that feels genuine, and a life that feels good to wake up to.</p>
+
+                <p>Once again, happy birthday, kanaaa!! 🩷 Thank you for sharing your works with the world, and i'm happy that i got to know you, even if it's only been a little while. Semoga di umur yang baru ini, kamu makin banyak ketemu hal baik, makin dekat sama impian kamu, and become even happier in your own little way.</p>
+
+                <p>Stay pretty, stay happy, and keep being your lovely self, kanaaa. Semoga semua kebaikan yang kamu kasih ke dunia bisa kembali ke kamu in the sweetest ways possible.</p>
+
+                <p>Have the loveliest birthday, pretty girl. You deserve so many good things, today and always. ✨🎀</p>
+            </div>
+            <button class="btn" onclick="goEnding()">Buka Ending 🌃</button>
+        </div>
+
+        <!-- ENDING SCENE -->
+        <div id="scene-ending" class="scene">
+            <div class="city-bg">
+                <div style="margin-bottom: auto; margin-top: 40px; padding: 20px; z-index:10;">
+                    <h1 style="font-family:'Fredoka One'; font-size:2.8rem; color:var(--soft-pink); text-shadow:3px 3px 0 var(--dark-pink);">Happy Birthday, Ana! 🩷</h1>
+                    <div style="background:rgba(255,255,255,0.15); backdrop-filter:blur(5px); border:2px solid var(--border-color); border-radius:16px; padding:15px; margin-top:15px; font-size:0.95rem; line-height:1.5; color:#fff;">
+                        "Misi selesai. Terima kasih sudah membuka setiap halaman. Semoga hari ini dan selamanya membawa kebahagiaan manis untuk Kanaaa."
+                    </div>
+                </div>
+                <svg class="cute-char" style="width:90px; height:90px; z-index:10; margin-bottom:-10px;" viewBox="0 0 100 100">
+                    <circle cx="50" cy="50" r="38" fill="#ff85a2" stroke="#fff" stroke-width="4"/>
+                    <circle cx="38" cy="45" r="5" fill="#4c0519"/>
+                    <circle cx="62" cy="45" r="5" fill="#4c0519"/>
+                    <path d="M 44,56 Q 50,64 56,56" fill="none" stroke="#4c0519" stroke-width="3" stroke-linecap="round"/>
+                </svg>
+                <div class="skyline"></div>
+            </div>
+        </div>
+
+        <!-- FINAL BLACK SCREEN -->
+        <div id="scene-final" class="scene" style="background:#1f1124;">
+            <h1 style="font-family:'Fredoka One'; font-size:2.2rem; color:var(--soft-pink); letter-spacing:1px; margin-bottom:15px;">Have the loveliest birthday, pretty girl. ✨</h1>
+            <p style="font-family:'Patrick Hand', cursive; font-size:2rem; color:var(--dark-pink);">Calon Pacar Aku Tersayang Anaaa 🩷</p>
+        </div>
+
+    </div>
+
+    <script>
+        /* --- Audio Synthesizer Engine --- */
+        const AudioContext = window.AudioContext || window.webkitAudioContext;
+        let audioCtx = null;
+        let soundEnabled = true;
+        let bgmTimer = null;
+        let bgmNoteIndex = 0;
+
+        function initAudio() {
+            if (!audioCtx) {
+                audioCtx = new AudioContext();
+            }
+            if (audioCtx.state === 'suspended') {
+                audioCtx.resume();
+            }
+        }
+
+        function toggleSound() {
+            soundEnabled = !soundEnabled;
+            document.querySelector('.sound-btn').innerText = soundEnabled ? '🔊' : '🔇';
+            if (!soundEnabled && bgmTimer) {
+                clearInterval(bgmTimer);
+                bgmTimer = null;
+            } else if (soundEnabled) {
+                startBGM();
+            }
+        }
+
+        /* Cute Melody BGM */
+        const bgmNotes = [
+            329.63, 392.00, 523.25, 659.25, 523.25, 392.00,
+            293.66, 349.23, 440.00, 587.33, 440.00, 349.23,
+            261.63, 329.63, 392.00, 523.25, 392.00, 329.63,
+            246.94, 293.66, 349.23, 493.88, 349.23, 293.66
+        ];
+
+        function startBGM() {
+            initAudio();
+            if (bgmTimer || !soundEnabled) return;
+            bgmTimer = setInterval(() => {
+                if (!soundEnabled) return;
+                const freq = bgmNotes[bgmNoteIndex % bgmNotes.length];
+                bgmNoteIndex++;
+
+                const osc = audioCtx.createOscillator();
+                const gain = audioCtx.createGain();
+                osc.type = 'sine';
+                osc.frequency.setValueAtTime(freq, audioCtx.currentTime);
+
+                gain.gain.setValueAtTime(0.03, audioCtx.currentTime);
+                gain.gain.exponentialRampToValueAtTime(0.001, audioCtx.currentTime + 0.45);
+
+                osc.connect(gain);
+                gain.connect(audioCtx.destination);
+                osc.start();
+                osc.stop(audioCtx.currentTime + 0.5);
+            }, 450);
+        }
+
+        function playSound(type) {
+            if (!soundEnabled) return;
+            initAudio();
+            const osc = audioCtx.createOscillator();
+            const gain = audioCtx.createGain();
+            osc.connect(gain);
+            gain.connect(audioCtx.destination);
+
+            if (type === 'click') {
+                osc.type = 'sine';
+                osc.frequency.setValueAtTime(520, audioCtx.currentTime);
+                gain.gain.setValueAtTime(0.1, audioCtx.currentTime);
+                gain.gain.exponentialRampToValueAtTime(0.01, audioCtx.currentTime + 0.05);
+                osc.start();
+                osc.stop(audioCtx.currentTime + 0.05);
+            } else if (type === 'pop') {
+                osc.type = 'triangle';
+                osc.frequency.setValueAtTime(220, audioCtx.currentTime);
+                osc.frequency.exponentialRampToValueAtTime(800, audioCtx.currentTime + 0.1);
+                gain.gain.setValueAtTime(0.15, audioCtx.currentTime);
+                gain.gain.exponentialRampToValueAtTime(0.01, audioCtx.currentTime + 0.1);
+                osc.start();
+                osc.stop(audioCtx.currentTime + 0.1);
+            } else if (type === 'success') {
+                osc.type = 'square';
+                osc.frequency.setValueAtTime(440, audioCtx.currentTime);
+                osc.frequency.setValueAtTime(659, audioCtx.currentTime + 0.1);
+                gain.gain.setValueAtTime(0.1, audioCtx.currentTime);
+                gain.gain.exponentialRampToValueAtTime(0.01, audioCtx.currentTime + 0.3);
+                osc.start();
+                osc.stop(audioCtx.currentTime + 0.3);
+            }
+        }
+
+        function triggerComicPop(text) {
+            playSound('success');
+            const pop = document.createElement('div');
+            pop.className = 'comic-pop';
+            pop.innerText = text;
+            pop.style.left = '50%';
+            pop.style.top = '40%';
+            pop.style.transform = 'translate(-50%, -50%)';
+            document.body.appendChild(pop);
+            setTimeout(() => pop.remove(), 1000);
+        }
+
+        function triggerCustomConfetti() {
+            confetti({
+                particleCount: 120,
+                spread: 80,
+                origin: { y: 0.6 }
+            });
+        }
+
+        function showScene(id) {
+            document.querySelectorAll('.scene').forEach(s => s.classList.remove('active'));
+            document.getElementById(id).classList.add('active');
+        }
+
+        document.body.addEventListener('click', () => {
+            startBGM();
+        }, { once: true });
+
+        /* Loading */
+        let progress = 0;
+        const progressBar = document.getElementById('loading-progress');
+        const loadingInterval = setInterval(() => {
+            progress += 5;
+            progressBar.style.width = progress + '%';
+            if (progress >= 100) {
+                clearInterval(loadingInterval);
+                setTimeout(() => showScene('scene2'), 500);
+            }
+        }, 70);
+
+        /* Dialogue */
+        const dialogues2 = [
+            "Hi, Ana! 👋",
+            "Hari ini aku cuma kurir ucapan spesial.",
+            "Ada seseorang yang menitipkan sesuatu yang sangat manis untukmu!"
+        ];
+        let d2Idx = 0;
+        function advanceScene2() {
+            playSound('click');
+            d2Idx++;
+            if (d2Idx < dialogues2.length) {
+                document.getElementById('dialogue2').innerText = dialogues2[d2Idx];
+            } else {
+                showScene('scene3');
+            }
+        }
+        setTimeout(() => {
+            document.getElementById('btn-next2').style.display = 'inline-block';
+        }, 1200);
+
+        /* Envelope */
+        let envClickState = 0;
+        function clickEnvelope() {
+            playSound('click');
+            const d3 = document.getElementById('dialogue3');
+            d3.style.display = 'block';
+            if (envClickState === 0) {
+                d3.innerText = "Eits... 😂 Belum boleh langsung dibaca.";
+                envClickState = 1;
+            } else if (envClickState === 1) {
+                d3.innerText = "Ada beberapa misi kecil dan seru dulu yang harus kamu selesaikan!";
+                document.getElementById('btn-start-m1').style.display = 'inline-block';
+            }
+        }
+
+        function goToMission(num) {
+            playSound('click');
+            showScene('m' + num);
+            if (num === 1) initMission1();
+            if (num === 2) initMission2();
+            if (num === 3) initMission3();
+            if (num === 4) initMission4();
+            if (num === 5) initMission5();
+        }
+
+        function typeWriter(elementId, text, btnId) {
+            let i = 0;
+            const speed = 25;
+            const elem = document.getElementById(elementId);
+            elem.innerHTML = "";
+            function type() {
+                if (i < text.length) {
+                    elem.innerHTML += text.charAt(i) === '\\n' ? '<br><br>' : text.charAt(i);
+                    i++;
+                    setTimeout(type, speed);
+                } else if (btnId) {
+                    document.getElementById(btnId).style.display = 'inline-block';
+                }
+            }
+            type();
+        }
+
+        /* MISSION 1: FLOWER HUNT */
+        let flowersFound = 0;
+        let flowerMoveIntervals = [];
+
+        function initMission1() {
+            flowersFound = 0;
+            document.getElementById('m1-count').innerText = 0;
+            const area = document.getElementById('hunt-area');
+            area.innerHTML = '';
+            flowerMoveIntervals.forEach(clearInterval);
+            flowerMoveIntervals = [];
+
+            const flowerIcons = ['🌸', '🌺', '🌻', '🌷', '🌸', '🌺', '🌻', '🌷'];
+
+            for (let i = 0; i < 8; i++) {
+                const sp = document.createElement('div');
+                sp.className = 'hidden-flower';
+                sp.innerHTML = flowerIcons[i];
+                let posX = Math.random() * 80 + 5;
+                let posY = Math.random() * 80 + 5;
+                sp.style.left = posX + '%';
+                sp.style.top = posY + '%';
+
+                const moveInt = setInterval(() => {
+                    posX = Math.max(5, Math.min(85, posX + (Math.random() * 20 - 10)));
+                    posY = Math.max(5, Math.min(85, posY + (Math.random() * 20 - 10)));
+                    sp.style.left = posX + '%';
+                    sp.style.top = posY + '%';
+                }, 800 + Math.random() * 400);
+                flowerMoveIntervals.push(moveInt);
+
+                sp.onclick = function() {
+                    playSound('pop');
+                    clearInterval(moveInt);
+                    this.remove();
+                    flowersFound++;
+                    document.getElementById('m1-count').innerText = flowersFound;
+                    if (flowersFound === 8) {
+                        triggerComicPop('LOVELY!');
+                        setTimeout(() => {
+                            showScene('letter1');
+                            typeWriter('type-p1', "Happy birthday to this pretty girl!! Semoga di umur yang baru ini, more good things find their way to you, yaa. Semoga selalu sehat, bahagia, dilancarin semua urusannya, dimudahin setiap langkahnya, and may all the little things you've been wishing for slowly come true. Semoga tahun ini jadi tahun yang penuh cerita baik, new experiences, and beautiful memories for you.", 'btn-to-m2');
+                        }, 800);
+                    }
+                };
+                area.appendChild(sp);
+            }
+        }
+
+        /* MISSION 2: PUZZLE */
+        let puzzleState = [1, 2, 3, 4, 5, 6, 7, 8, 0];
+
+        function initMission2() {
+            do {
+                puzzleState.sort(() => Math.random() - 0.5);
+            } while (!isSolvable(puzzleState) || isSolved(puzzleState));
+
+            renderPuzzle();
+        }
+
+        function isSolvable(arr) {
+            let inversions = 0;
+            for (let i = 0; i < arr.length - 1; i++) {
+                for (let j = i + 1; j < arr.length; j++) {
+                    if (arr[i] && arr[j] && arr[i] > arr[j]) inversions++;
+                }
+            }
+            return inversions % 2 === 0;
+        }
+
+        function isSolved(arr) {
+            const goal = [1, 2, 3, 4, 5, 6, 7, 8, 0];
+            return arr.every((val, idx) => val === goal[idx]);
+        }
+
+        function renderPuzzle() {
+            const board = document.getElementById('puzzle-board');
+            board.innerHTML = '';
+            puzzleState.forEach((val, idx) => {
+                const tile = document.createElement('div');
+                tile.className = 'puzzle-tile' + (val === 0 ? ' empty' : '');
+                tile.innerText = val !== 0 ? val : '';
+                tile.onclick = () => moveTile(idx);
+                board.appendChild(tile);
+            });
+        }
+
+        function moveTile(idx) {
+            const emptyIdx = puzzleState.indexOf(0);
+            const r1 = Math.floor(idx / 3), c1 = idx % 3;
+            const r2 = Math.floor(emptyIdx / 3), c2 = emptyIdx % 3;
+
+            const isAdjacent = (Math.abs(r1 - r2) + Math.abs(c1 - c2)) === 1;
+
+            if (isAdjacent) {
+                playSound('click');
+                puzzleState[emptyIdx] = puzzleState[idx];
+                puzzleState[idx] = 0;
+                renderPuzzle();
+
+                if (isSolved(puzzleState)) {
+                    triggerComicPop('GREAT!');
+                    setTimeout(() => {
+                        showScene('letter2');
+                        typeWriter('type-p2', "Honestly, it's really nice getting to know you. Awalnya cuma sering baca tulisanmu, terus pas kamu ajak idupin api tuh wow tbh i'm so happy. Yah, walaupun kita belum lama kenal dan masih banyak hal yang belum kita tau satu sama lain, i'm glad our little interactions happened. It's a small thing, but still a nice one.", 'btn-to-m3');
+                    }, 800);
+                }
+            }
+        }
+
+        /* MISSION 3: MEMORY MATCH */
+        const memoryIcons = ['🎀', '💖', '🎁', '🌸', '🎀', '💖', '🎁', '🌸'];
+        let flippedCards = [];
+        let matchedPairs = 0;
+
+        function initMission3() {
+            flippedCards = [];
+            matchedPairs = 0;
+            const board = document.getElementById('memory-board');
+            board.innerHTML = '';
+            const shuffled = [...memoryIcons].sort(() => Math.random() - 0.5);
+
+            shuffled.forEach((icon) => {
+                const card = document.createElement('div');
+                card.className = 'memory-card';
+                card.dataset.icon = icon;
+                card.innerText = '❓';
+
+                card.onclick = function() {
+                    if (flippedCards.length < 2 && !this.classList.contains('flipped')) {
+                        playSound('click');
+                        this.classList.add('flipped');
+                        this.innerText = icon;
+                        flippedCards.push(this);
+
+                        if (flippedCards.length === 2) {
+                            if (flippedCards[0].dataset.icon === flippedCards[1].dataset.icon) {
+                                playSound('pop');
+                                matchedPairs++;
+                                flippedCards = [];
+                                if (matchedPairs === 4) {
+                                    triggerComicPop('MATCH!');
+                                    setTimeout(() => {
+                                        showScene('letter3');
+                                        typeWriter('type-p3', "For your special day, I hope life will be a little kinder to you. Semoga kamu selalu dikelilingi orang-orang yang tulus, yang nyaman buat diajak cerita, yang bisa bikin kamu ketawa di hari-hari biasa, and people who appreciate you just the way you are. Semoga kamu selalu punya tempat buat pulang, tempat buat istirahat, dan orang-orang yang bikin kamu ngerasa safe enough to be yourself.", 'btn-to-m4');
+                                    }, 800);
+                                }
+                            } else {
+                                setTimeout(() => {
+                                    flippedCards.forEach(c => {
+                                        c.classList.remove('flipped');
+                                        c.innerText = '❓';
+                                    });
+                                    flippedCards = [];
+                                }, 700);
+                            }
+                        }
+                    }
+                };
+                board.appendChild(card);
+            });
+        }
+
+        /* MISSION 4: CATCH TARGET */
+        let websCaught = 0;
+        let webTimer = null;
+
+        function initMission4() {
+            websCaught = 0;
+            document.getElementById('m4-count').innerText = 0;
+            spawnWeb();
+        }
+
+        function spawnWeb() {
+            const area = document.getElementById('web-area');
+            area.innerHTML = '';
+            if (websCaught >= 5) return;
+
+            const web = document.createElement('div');
+            web.className = 'ribbon-target';
+            web.innerText = '🎀';
+
+            const x = Math.random() * 75 + 5;
+            const y = Math.random() * 75 + 5;
+            web.style.left = x + '%';
+            web.style.top = y + '%';
+
+            web.onclick = function() {
+                playSound('pop');
+                websCaught++;
+                document.getElementById('m4-count').innerText = websCaught;
+                clearTimeout(webTimer);
+                if (websCaught >= 5) {
+                    triggerComicPop('PERFECT!');
+                    setTimeout(() => {
+                        showScene('letter4');
+                        typeWriter('type-p4', "Also, please keep writing your beautiful stories, kanaaa!! Semoga kamu selalu punya banyak inspirasi, nggak kehabisan ide buat berkarya, and never lose the excitement of creating something you love. Semoga tulisan-tulisan kamu bisa terus menemukan pembacanya, diterima dengan baik, dan jadi sesuatu yang membahagiakan buat kamu sendiri.", 'btn-to-m5');
+                    }, 800);
+                } else {
+                    spawnWeb();
+                }
+            };
+
+            area.appendChild(web);
+            webTimer = setTimeout(() => {
+                if (websCaught < 5) spawnWeb();
+            }, 1200);
+        }
+
+        /* MISSION 5: REAL BALLOON POP GAME */
+        let balloonsPopped = 0;
+        let balloonLives = 3;
+        let balloonSpawnInterval = null;
+        let balloonGameOver = false;
+
+        function initMission5() {
+            balloonsPopped = 0;
+            balloonLives = 3;
+            balloonGameOver = false;
+
+            document.getElementById('m5-count').innerText = 0;
+            document.getElementById('m5-lives').innerText = '❤️❤️❤️';
+
+            const area = document.getElementById('balloon-area');
+            area.innerHTML = '';
+
+            if (balloonSpawnInterval) clearInterval(balloonSpawnInterval);
+
+            for (let i = 0; i < 4; i++) {
+                setTimeout(() => {
+                    if (!balloonGameOver) spawnBalloonOrTrap();
+                }, i * 250);
+            }
+
+            balloonSpawnInterval = setInterval(() => {
+                if (balloonGameOver || balloonsPopped >= 5) return;
+                spawnBalloonOrTrap();
+            }, 750);
+        }
+
+        function spawnBalloonOrTrap() {
+            const area = document.getElementById('balloon-area');
+            if (!area || balloonGameOver) return;
+
+            const isTrap = Math.random() < 0.28;
+
+            if (isTrap) {
+                const trap = document.createElement('div');
+                trap.className = 'wrong-object';
+
+                const traps = ['💣', '🌧️', '⚡', '💥'];
+                trap.innerText = traps[Math.floor(Math.random() * traps.length)];
+
+                trap.style.left = (Math.random() * 82 + 4) + '%';
+                trap.style.top = '0px';
+                trap.style.setProperty('--float-time', (Math.random() * 1.7 + 3.2) + 's');
+
+                trap.onclick = function(e) {
+                    e.stopPropagation();
+                    if (balloonGameOver) return;
+                    loseBalloonLife(this);
+                };
+
+                trap.addEventListener('animationend', () => trap.remove());
+                area.appendChild(trap);
+                return;
+            }
+
+            const balloon = document.createElement('div');
+            balloon.className = 'floating-balloon';
+
+            balloon.style.left = (Math.random() * 82 + 4) + '%';
+            balloon.style.top = '0px';
+            balloon.style.setProperty('--float-time', (Math.random() * 1.8 + 3.1) + 's');
+
+            balloon.onclick = function(e) {
+                e.stopPropagation();
+
+                if (balloonGameOver) return;
+
+                playSound('pop');
+                createPopEffect(this);
+
+                balloonsPopped++;
+                document.getElementById('m5-count').innerText = balloonsPopped;
+
+                this.remove();
+
+                if (balloonsPopped >= 5) {
+                    finishBalloonMission();
+                }
+            };
+
+            balloon.addEventListener('animationend', () => balloon.remove());
+            area.appendChild(balloon);
+        }
+
+        function createPopEffect(target) {
+            const area = document.getElementById('balloon-area');
+            const rect = target.getBoundingClientRect();
+            const areaRect = area.getBoundingClientRect();
+
+            const burst = document.createElement('div');
+            burst.className = 'pop-burst';
+            burst.innerText = 'POP!';
+
+            burst.style.left =
+                (rect.left - areaRect.left + rect.width / 2 - 25) + 'px';
+            burst.style.top =
+                (rect.top - areaRect.top + rect.height / 2 - 20) + 'px';
+
+            area.appendChild(burst);
+
+            for (let i = 0; i < 10; i++) {
+                const piece = document.createElement('div');
+                piece.className = 'pop-piece';
+
+                piece.style.left =
+                    (rect.left - areaRect.left + rect.width / 2) + 'px';
+                piece.style.top =
+                    (rect.top - areaRect.top + rect.height / 2) + 'px';
+
+                piece.style.setProperty(
+                    '--dx',
+                    ((Math.random() - .5) * 130) + 'px'
+                );
+
+                piece.style.setProperty(
+                    '--dy',
+                    ((Math.random() - .5) * 110) + 'px'
+                );
+
+                area.appendChild(piece);
+                setTimeout(() => piece.remove(), 500);
+            }
+
+            setTimeout(() => burst.remove(), 450);
+        }
+
+        function loseBalloonLife(trap) {
+            playSound('click');
+
+            balloonLives--;
+
+            document.getElementById('m5-lives').innerText =
+                '❤️'.repeat(Math.max(0, balloonLives)) +
+                '🖤'.repeat(Math.max(0, 3 - balloonLives));
+
+            const area = document.getElementById('balloon-area');
+
+            const warning = document.createElement('div');
+            warning.className = 'pop-burst';
+            warning.innerText = 'WRONG! 💥';
+            warning.style.left = trap.offsetLeft + 'px';
+            warning.style.top = trap.offsetTop + 'px';
+
+            area.appendChild(warning);
+            trap.remove();
+
+            setTimeout(() => warning.remove(), 500);
+
+            if (balloonLives <= 0) {
+                balloonGameOver = true;
+                clearInterval(balloonSpawnInterval);
+
+                triggerComicPop('TRY AGAIN!');
+
+                setTimeout(() => initMission5(), 1000);
+            }
+        }
+
+        function finishBalloonMission() {
+            balloonGameOver = true;
+            clearInterval(balloonSpawnInterval);
+
+            triggerComicPop('ALL POPPED!');
+            triggerCustomConfetti();
+
+            setTimeout(() => {
+                showScene('quiz-scene');
+
+                document.getElementById('quiz-feedback').innerText = '';
+
+                document.querySelectorAll('.quiz-option').forEach(btn => {
+                    btn.classList.remove('correct', 'wrong');
+                    btn.disabled = false;
+                });
+            }, 900);
+        }
+
+        /* BIRTHDAY CAKE */
+        const totalCandles = 3;
+        let candlesBlown = 0;
+
+        function initBirthdayCake() {
+            const grid = document.getElementById('candles-grid');
+            grid.innerHTML = '';
+
+            for (let i = 1; i <= totalCandles; i++) {
+                const candle = document.createElement('button');
+                candle.className = 'candle';
+                candle.type = 'button';
+
+                const flame = document.createElement('span');
+                flame.className = 'flame';
+                candle.appendChild(flame);
+
+                candle.addEventListener('click', function () {
+                    if (candle.classList.contains('blown')) return;
+
+                    candle.classList.add('blown');
+                    candle.disabled = true;
+                    candlesBlown++;
+
+                    document.getElementById('candle-count').innerText =
+                        candlesBlown + ' / ' + totalCandles;
+
+                    if (candlesBlown === totalCandles) {
+                        finishBirthdayCake();
+                    }
+                });
+
+                grid.appendChild(candle);
+            }
+        }
+
+        function finishBirthdayCake() {
+            document.getElementById('cake-complete').style.display = 'block';
+
+            document.getElementById('cake-message').innerText =
+                'Semoga semua doa baik Kanaaa satu-satu jadi nyata. Happy birthday, Ana! 🎉🎀';
+
+            document.getElementById('btn-open-letter').style.display =
+                'inline-block';
+
+            playSound('success');
+            triggerCustomConfetti();
+        }
+
+        function openBirthdayLetter() {
+            playSound('click');
+            showScene('full-letter-scene');
+        }
+
+        /* BONUS QUIZ */
+        function answerQuiz(answer, button) {
+            const feedback = document.getElementById('quiz-feedback');
+
+            if (answer === 'c') {
+                button.classList.add('correct');
+
+                document.querySelectorAll('.quiz-option').forEach(btn => {
+                    btn.disabled = true;
+                });
+
+                feedback.style.color = '#15803d';
+                feedback.innerText =
+                    'Correct! 🎉 The answer is 01 November 2025.';
+
+                playSound('success');
+                triggerCustomConfetti();
+
+                setTimeout(() => {
+                    showScene('cake-scene');
+                    initBirthdayCake();
+                }, 1200);
+
+            } else {
+                button.classList.add('wrong');
+
+                feedback.style.color = '#be123c';
+                feedback.innerText = 'Not quite! Try again. 💭';
+
+                playSound('click');
+
+                setTimeout(() => {
+                    button.classList.remove('wrong');
+                }, 600);
+            }
+        }
+
+        /* ENDING */
+        function goEnding() {
+            playSound('click');
+            showScene('scene-ending');
+            triggerCustomConfetti();
+            setTimeout(() => {
+                showScene('scene-final');
+            }, 7000);
+        }
+    </script>
+</body>
+</html>
